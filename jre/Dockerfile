@@ -17,12 +17,11 @@ ENV CLASSPATH=.:${JAVA_HOME}/lib:${CLASSPATH}
 
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip \
     && mkdir -p /app/tools/java \
-    && cd /app/tools/java \
+    && cd /tmp \
     && wget --header "Cookie: oraclelicense=accept-securebackup-cookie" "${JAVA_DOWNLOAD_URL}" \
-    && tar -zxf jre-${JAVA_FULL_VERSION}-linux-x64.tar.gz \
+    && tar -zxf jre-${JAVA_FULL_VERSION}-linux-x64.tar.gz -C /app/tools/java \
     && ln -s /app/tools/java/jre1.${JAVA_VERSION}.0_${JAVA_UPDATE} /app/tools/java/jre \
     && wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" "${JAVA_JCE_DOWNLOAD_URL}" \
     && unzip -jo -d "${JAVA_HOME}/lib/security" "jce_policy-${JAVA_VERSION}.zip" \
     && apk del build-dependencies \
-    && rm -rf jre-8u162-linux-x64.tar.gz \
-    && rm -rf jce_policy-${JAVA_VERSION}.zip
+    && rm -rf /tmp/*
